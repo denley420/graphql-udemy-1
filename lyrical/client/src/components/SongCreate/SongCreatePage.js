@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { graphql } from 'react-apollo';
+import {Link, useNavigate} from 'react-router-dom';
+import { graphql } from '@apollo/client/react/hoc';
 
 import fetchSongsQuery from '../../shared/graphql/fetchSongs';
 import addSongMutation from '../../shared/graphql/addSong';
@@ -8,7 +8,7 @@ import addSongMutation from '../../shared/graphql/addSong';
 const SongCreate = props => {
 	const [ _title, _setTitle ] = useState('');
 
-	const history = useHistory();
+	const history = useNavigate();
 
 	const handleOnChange = event => {
 		_setTitle(event.target.value);
@@ -28,7 +28,7 @@ const SongCreate = props => {
 				history.push('/');
 			});
 	};
-
+	console.log('I am here')
 	return (
 		<div>
 			<Link to='/'>Back</Link>
