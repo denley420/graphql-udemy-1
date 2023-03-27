@@ -1,14 +1,28 @@
 import React from 'react';
-import { useQuery } from '@apollo/client';
-import { Link } from 'react-router-dom';
+import {useMutation, useQuery} from '@apollo/client';
+import {Link, useNavigate} from 'react-router-dom';
 import FETCH_SONGS from "../queries/fetchSongs";
+import DELETE_SONG from "../queries/deleteSong";
 
 const SongList = () => {
   const { loading, error, data } = useQuery(FETCH_SONGS);
-  const renderSongs = !loading && data.songs.map(song => {
+  const [deleteSong] = useMutation(DELETE_SONG, {
+    refetchQueries: [{query: FETCH_SONGS}],});
+  const navigate = useNavigate();
+
+  const onSongDelete = (id) => {
+    deleteSong({variables: {id: id}}).then(r => r.data);
+     navigate('/songs');
+  }
+
+  const renderSongs = !loading && data.songs.map(({ id, title }) => {
     return (
-      <li key={song.id} className="collection-item">
-        {song.title}
+      <li key={id} className="collection-item">
+        <Link to={id}>
+        {title}
+        </Link>
+        <i className={"material-icons"}
+           onClick={() => onSongDelete(id)}>delete</i>
       </li>
     )
   })
