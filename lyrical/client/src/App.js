@@ -1,41 +1,41 @@
-import React from 'react';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import React from "react";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 
-import ApolloClient from 'apollo-client';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider } from "react-apollo";
 
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
+import { HttpLink } from "apollo-link-http";
 
-import Dashboard from './components/Dashboard/DashboardPage';
-import SongCreate from './components/SongCreate/SongCreatePage';
-import SongDetail from './components/SongDetail/SongDetailPage';
+import Dashboard from "./components/Dashboard/DashboardPage";
+import SongCreate from "./components/SongCreate/SongCreatePage";
+import SongDetail from "./components/SongDetail/SongDetailPage";
 
 const cache = new InMemoryCache({});
 
 const link = new HttpLink({
-	uri: 'http://172.25.205.83:4000/graphql'
+  uri: "http://localhost:4000/graphql",
 });
 
 const client = new ApolloClient({
-	cache,
-	link
+  uri: "http://localhost:4000/graphql",
+  cache: new InMemoryCache(),
 });
 
-function App () {
-	return (
-		<ApolloProvider client={client}>
-			<Router>
-				<section className='container'>
-					<Switch>
-						<Route exact path='/' component={Dashboard} />
-						<Route path='/songs/new' component={SongCreate} />
-						<Route path='/songs/:id' component={SongDetail} />
-					</Switch>
-				</section>
-			</Router>
-		</ApolloProvider>
-	);
+function App() {
+  return (
+    <ApolloProvider client={client}>
+      <section className="container">
+        <h1>Lyrical</h1>
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Dashboard} />
+            <Route path="/songs/new" component={SongCreate} />
+            <Route path="/songs/:id" component={SongDetail} />
+          </Switch>
+        </Router>
+      </section>
+    </ApolloProvider>
+  );
 }
 
 export default App;
